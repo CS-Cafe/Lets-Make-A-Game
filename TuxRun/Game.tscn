@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Ground.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Tux.tscn" type="PackedScene" id=2]
+[ext_resource path="res://shadow.png" type="Texture" id=3]
 [ext_resource path="res://Game.gd" type="Script" id=4]
 
 [node name="Game" type="Node2D"]
@@ -11,5 +12,12 @@ script = ExtResource( 4 )
 [node name="Ground" parent="." instance=ExtResource( 1 )]
 position = Vector2( 512, 479 )
 
-[node name="Tux" parent="Ground" instance=ExtResource( 2 )]
-position = Vector2( -377, -168 )
+[node name="Obstacles" type="CanvasLayer" parent="."]
+
+[node name="shadow" type="Sprite" parent="."]
+position = Vector2( 135, 436 )
+scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 3 )
+
+[node name="Tux" parent="." instance=ExtResource( 2 )]
+position = Vector2( 135, 311 )

@@ -5,7 +5,7 @@ extends KinematicBody2D # The player is a kinematic body, hence extends Kine..
 export var speed = 700 # The speed of the character
 export var gravity = 32 # The gravity of the character
 export var jumpforce = 1000 # The jump force of the character
-
+signal tux_death
 var motion = Vector2.ZERO 
 
 func _physics_process(delta): 
@@ -22,3 +22,7 @@ func _physics_process(delta):
 	motion = move_and_slide(motion, Vector2.UP)
 	# Move and slide is a function which allows the kinematic body to detect
 	# collisions and move accordingly
+
+func _death_function():
+	emit_signal("tux_death")
+	queue_free()
