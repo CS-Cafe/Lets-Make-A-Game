@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://background.PNG" type="Texture" id=1]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [  ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 512, 50 )
+
+[node name="Ground" type="StaticBody2D"]
+position = Vector2( 436.246, 124.756 )
+
+[node name="MovingGround" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="MovingGround"]
+margin_left = -536.0
+margin_top = -80.0
+margin_right = 520.0
+margin_bottom = 256.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="background" type="Sprite" parent="."]
+position = Vector2( -0.55661, -444.232 )
+scale = Vector2( 0.695785, 0.80371 )
+texture = ExtResource( 1 )

@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://tux_sprite.png" type="Texture" id=1]
+[ext_resource path="res://Tux.gd" type="Script" id=2]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="Tux" type="KinematicBody2D"]
+scale = Vector2( 1.5, 1.5 )
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( -7.62939e-06, 7.62939e-06 )
+scale = Vector2( -0.123165, 0.123165 )
+frames = SubResource( 1 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -32, -40, -40, -16, -40, 16, -24, 48, 0, 56, 24, 56, 40, 40, 40, -8, 32, -32, 8, -40, -24, -40 )
