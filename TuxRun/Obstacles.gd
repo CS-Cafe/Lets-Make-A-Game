@@ -15,7 +15,7 @@ func _ready():
 func _process(delta):
 	position.x -= 5
 	
-	if position.x < 0:
+	if position.x < -100:
 		queue_free()
 
 

@@ -14,10 +14,12 @@ position = Vector2( 512, 479 )
 
 [node name="Obstacles" type="CanvasLayer" parent="."]
 
-[node name="shadow" type="Sprite" parent="."]
-position = Vector2( 135, 436 )
+[node name="Player" type="CanvasLayer" parent="."]
+
+[node name="shadow" type="Sprite" parent="Player"]
+position = Vector2( 135, 437 )
 scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 3 )
 
-[node name="Tux" parent="." instance=ExtResource( 2 )]
-position = Vector2( 135, 311 )
+[node name="Tux" parent="Player" instance=ExtResource( 2 )]
+position = Vector2( 135, 312 )

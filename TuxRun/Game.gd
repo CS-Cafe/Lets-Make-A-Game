@@ -9,7 +9,7 @@ var timer
 var obstacle = load("res://Obstacles.tscn")
 var rng = RandomNumberGenerator.new()
 
-onready var obstacles = get_node("Game/Obstacles")
+onready var obstacles = get_node("Obstacles")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	rng.randomize()
@@ -26,6 +26,7 @@ func _process(delta):
 	if(time > time_between):
 		time_between = rng.randi_range(3,8)
 		o.position.x = 1200
-		o.position.y = 420
+		o.position.y = 445
 		time = 0
-		add_child(o)
+		#obstacles.add_child(o)
+		get_tree().get_root().get_node("./Game/Obstacles").add_child(o)
