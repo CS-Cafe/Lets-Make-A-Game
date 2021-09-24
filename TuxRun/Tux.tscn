@@ -9,6 +9,11 @@ animations = [ {
 "loop": true,
 "name": "default",
 "speed": 5.0
+}, {
+"frames": [ null, ExtResource( 1 ), null, ExtResource( 1 ), null, ExtResource( 1 ) ],
+"loop": false,
+"name": "death",
+"speed": 2.0
 } ]
 
 [node name="Tux" type="KinematicBody2D"]
@@ -19,6 +24,7 @@ script = ExtResource( 2 )
 position = Vector2( -7.62939e-06, 7.62939e-06 )
 scale = Vector2( -0.123165, 0.123165 )
 frames = SubResource( 1 )
+playing = true
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 polygon = PoolVector2Array( -32, -40, -40, -16, -40, 16, -24, 48, 0, 56, 24, 56, 40, 40, 40, -8, 32, -32, 8, -40, -24, -40 )

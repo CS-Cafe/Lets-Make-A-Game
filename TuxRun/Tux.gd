@@ -25,4 +25,13 @@ func _physics_process(delta):
 
 func _death_function():
 	emit_signal("tux_death")
+	$AnimatedSprite.play("death")
+	var timer = Timer.new()
+	timer.connect("timeout",self,"_on_timer_timeout") 
+	timer.wait_time = 3
+	add_child(timer) #to process
+	timer.start() #to start
+
+func _on_timer_timeout():
+	
 	queue_free()

@@ -1,9 +1,22 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Ground.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Tux.tscn" type="PackedScene" id=2]
 [ext_resource path="res://shadow.png" type="Texture" id=3]
 [ext_resource path="res://Game.gd" type="Script" id=4]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ null, ExtResource( 3 ), null, ExtResource( 3 ), null, ExtResource( 3 ), null ],
+"loop": false,
+"name": "death",
+"speed": 2.0
+} ]
 
 [node name="Game" type="Node2D"]
 position = Vector2( 0, 1 )
@@ -16,10 +29,28 @@ position = Vector2( 512, 479 )
 
 [node name="Player" type="CanvasLayer" parent="."]
 
-[node name="shadow" type="Sprite" parent="Player"]
+[node name="shadow" type="AnimatedSprite" parent="Player"]
 position = Vector2( 135, 437 )
 scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 3 )
+frames = SubResource( 1 )
 
 [node name="Tux" parent="Player" instance=ExtResource( 2 )]
 position = Vector2( 135, 312 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+visible = false
+margin_left = 440.0
+margin_top = 430.0
+margin_right = 792.0
+margin_bottom = 573.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+custom_colors/default_color = Color( 1, 0, 0, 1 )
+text = "Press Ret to Restart"
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="tux_death" from="Player/Tux" to="." method="_on_Tux_tux_death"]
