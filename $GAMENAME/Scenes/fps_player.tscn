@@ -1,11 +1,13 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://fps_player.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/fps_player.gd" type="Script" id=1]
 
 [sub_resource type="CapsuleShape" id=1]
 
 [sub_resource type="BoxShape" id=2]
 extents = Vector3( 1, 0.317707, 1 )
+
+[sub_resource type="BoxShape" id=3]
 
 [node name="fps_player" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -26,6 +28,14 @@ shape = SubResource( 2 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.890245, 0 )
 
 [node name="gun_fire_points" type="Spatial" parent="rotation_helper"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.89, -2 )
+
+[node name="grab_objects" type="Spatial" parent="rotation_helper/gun_fire_points"]
+
+[node name="Area" type="Area" parent="rotation_helper/gun_fire_points/grab_objects"]
+
+[node name="CollisionShape" type="CollisionShape" parent="rotation_helper/gun_fire_points/grab_objects/Area"]
+shape = SubResource( 3 )
 
 [node name="gun_aim_points" type="Spatial" parent="rotation_helper"]
 
@@ -42,3 +52,27 @@ margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Reticle" type="Control" parent="player_hud"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="ColorRect2" type="ColorRect" parent="player_hud/Reticle"]
+margin_left = -2.0
+margin_top = -2.0
+margin_right = 22.0
+margin_bottom = 22.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="player_hud/Reticle"]
+margin_right = 20.0
+margin_bottom = 20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="body_entered" from="rotation_helper/gun_fire_points/grab_objects/Area" to="." method="_on_Area_body_entered"]
+[connection signal="body_exited" from="rotation_helper/gun_fire_points/grab_objects/Area" to="." method="_on_Area_body_exited"]

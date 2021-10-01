@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="SphereShape" id=1]
+
+[node name="RigidBody" type="RigidBody"]
+
+[node name="CSGSphere" type="CSGSphere" parent="."]
+radial_segments = 32
+rings = 32
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
+
+[node name="OmniLight" type="OmniLight" parent="."]
