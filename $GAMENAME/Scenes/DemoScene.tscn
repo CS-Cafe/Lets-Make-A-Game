@@ -37,10 +37,6 @@ depth = 10.0
 
 [node name="fps_player" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.80902, 9.72751, 1.60423 )
-OBJECT_THROW_FORCE = 0
-OBJECT_GRAB_DISTANCE = 5
-OBJECT_GRAB_RAY_DISTANCE = 6
-MOUSE_SENSITIVITY = 0.1
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 3 )
