@@ -153,8 +153,10 @@ func process_inputs(delta):
 					if ray_result["collider"] is RigidBody:
 						grabbed_object = ray_result["collider"]
 						grabbed_object.mode = RigidBody.MODE_STATIC
-						grabbed_object.collision_layer = 0
-						grabbed_object.collision_mask = 0
+						grabbed_object.collision_layer = 1 #original is 0
+						grabbed_object.collision_mask = 1 #original is 0
+						#Just for Size Purposes with test object
+						grabbed_object.scale = grabbed_object.scale * 0.5
 						
 						
 			else:
@@ -163,6 +165,8 @@ func process_inputs(delta):
 				grabbed_object.collision_layer = 1
 				grabbed_object.collision_mask = 1
 				grabbed_object.thrown = true #Object has been thrown
+				#Just for Size Purposes with test object
+				grabbed_object.scale = grabbed_object.scale * 2
 				
 				grabbed_object = null
 		if grabbed_object != null:

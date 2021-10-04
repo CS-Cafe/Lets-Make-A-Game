@@ -9,15 +9,17 @@
 extents = Vector3( 5, 1, 5 )
 
 [sub_resource type="ProceduralSky" id=2]
-sky_top_color = Color( 0.462745, 0.686275, 0.909804, 1 )
-sky_horizon_color = Color( 0.0156863, 0.2, 0.345098, 1 )
-ground_bottom_color = Color( 0.862745, 0.839216, 0.839216, 1 )
-ground_horizon_color = Color( 0.929412, 0.85098, 0.415686, 1 )
+sky_top_color = Color( 0.0235294, 0.0235294, 0.0235294, 1 )
+sky_horizon_color = Color( 0.247059, 0.619608, 0.211765, 1 )
+sky_curve = 0.302722
+ground_bottom_color = Color( 0, 0, 0, 1 )
+ground_horizon_color = Color( 0.12549, 1, 0, 1 )
+sun_energy = 2.0
 
 [sub_resource type="Environment" id=3]
 background_mode = 2
 background_sky = SubResource( 2 )
-ambient_light_color = Color( 1, 1, 1, 1 )
+ambient_light_energy = 0.0
 fog_color = Color( 0, 0, 0, 1 )
 fog_sun_color = Color( 0, 0, 0, 1 )
 fog_depth_enabled = false
@@ -39,6 +41,7 @@ depth = 10.0
 [node name="fps_player" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.80902, 9.72751, 1.60423 )
 OBJECT_THROW_FORCE = 10
+OBJECT_GRAB_DISTANCE = 2
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 3 )
@@ -50,4 +53,32 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.88282, 29.4316 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 14, 10 )
 
 [node name="PressurePlate" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24.2248, 4.1911, 22.7156 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24.225, 1, 22.716 )
+
+[node name="PressurePlate3" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1, 22.716 )
+
+[node name="PressurePlate4" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 22.716 )
+
+[node name="PressurePlate2" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 1, 22.716 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+margin_left = 27.0
+margin_top = 28.0
+margin_right = 616.0
+margin_bottom = 86.0
+text = "Right Click to Pick up Spheres, Right Click again to Throw them at Pressure Plates"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpotLight" type="SpotLight" parent="."]
+transform = Transform( 0.750676, 2.88788e-08, -0.66067, 0.66067, -3.28131e-08, 0.750676, 0, -1, -4.37114e-08, -76.4847, 79.8952, 0 )
+light_color = Color( 0.486275, 0.47451, 0.47451, 1 )
+shadow_enabled = true
+spot_range = 162.3
+spot_attenuation = 0.901251
+spot_angle = 41.1
+spot_angle_attenuation = 5.27802

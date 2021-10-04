@@ -9,6 +9,7 @@ func _on_PressurePlate_body_entered(body):
 		print("PressurePlate")
 		active = not active
 		print(active)
+		queue_free()
 		#attach to other objects/nodes that will be activated by the 
 		#plate or not
 		#Also need to let players hit it
