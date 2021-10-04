@@ -16,6 +16,12 @@ script = ExtResource( 1 )
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 shape = SubResource( 1 )
 
+[node name="damage_area" type="Area" parent="."]
+
+[node name="area_collision_body" type="CollisionShape" parent="damage_area"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+shape = SubResource( 1 )
+
 [node name="collision_feet" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.07482, 0 )
 shape = SubResource( 2 )
@@ -74,5 +80,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[connection signal="body_entered" from="damage_area" to="." method="_on_damage_area_body_entered"]
 [connection signal="body_entered" from="rotation_helper/gun_fire_points/grab_objects/Area" to="." method="_on_Area_body_entered"]
 [connection signal="body_exited" from="rotation_helper/gun_fire_points/grab_objects/Area" to="." method="_on_Area_body_exited"]

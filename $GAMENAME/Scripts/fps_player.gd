@@ -156,11 +156,13 @@ func process_inputs(delta):
 						grabbed_object.collision_layer = 0
 						grabbed_object.collision_mask = 0
 						
+						
 			else:
 				grabbed_object.mode = RigidBody.MODE_RIGID
 				grabbed_object.apply_impulse(Vector3(0,0,0), -camera.global_transform.basis.z.normalized()*OBJECT_THROW_FORCE)
 				grabbed_object.collision_layer = 1
 				grabbed_object.collision_mask = 1
+				grabbed_object.thrown = true #Object has been thrown
 				
 				grabbed_object = null
 		if grabbed_object != null:
@@ -215,3 +217,8 @@ func _on_Area_body_exited(body):
 		reticle.color = Color(1,1,1,1)
 	pass
 	pass # Replace with function body.
+
+
+func _on_damage_area_body_entered(body):
+	if body is RigidBody and body.damage != null and body.thrown == true:
+		pass
