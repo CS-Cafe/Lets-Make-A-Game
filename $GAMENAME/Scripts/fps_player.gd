@@ -157,7 +157,8 @@ func process_inputs(delta):
 						grabbed_object.collision_mask = 1 #original is 0
 						#Just for Size Purposes with test object
 						grabbed_object.scale = grabbed_object.scale * 0.5
-						
+						grabbed_object.set_visible(false)
+						#Setup logic for holding object in hand here
 						
 			else:
 				grabbed_object.mode = RigidBody.MODE_RIGID
@@ -167,8 +168,9 @@ func process_inputs(delta):
 				grabbed_object.thrown = true #Object has been thrown
 				#Just for Size Purposes with test object
 				grabbed_object.scale = grabbed_object.scale * 2
-				
+				grabbed_object.set_visible(true)
 				grabbed_object = null
+				#Setup logic for removing object in hand here
 		if grabbed_object != null:
 			grabbed_object.global_transform.origin = camera.global_transform.origin + (-camera.global_transform.basis.z.normalized() * OBJECT_GRAB_DISTANCE)
 
@@ -199,7 +201,10 @@ func process_movement(delta):
 	hvel = hvel.linear_interpolate(target, accel * delta)
 	vel.x = hvel.x
 	vel.z = hvel.z
-	vel = move_and_slide(vel, Vector3(0,1,0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+	#vel = move_and_slide(vel, Vector3(0,1,0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+	#testing realistic kinematic and rigid body interaction
+	vel = move_and_slide(vel, Vector3(0,1,0),0.05, 4, deg2rad(MAX_SLOPE_ANGLE), false)
+
 	
 
 #Considering Highlighting Objects or Highlighting/Changing HUD Reticle
