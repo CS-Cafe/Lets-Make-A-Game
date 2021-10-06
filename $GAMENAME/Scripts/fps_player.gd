@@ -13,6 +13,7 @@ const MAX_SPEED = 15
 var vel = Vector3()
 var dir = Vector3()
 
+
 #Jump Movement
 const JUMP_SPEED = 9
 const gravity = -24.8
@@ -201,9 +202,20 @@ func process_movement(delta):
 	hvel = hvel.linear_interpolate(target, accel * delta)
 	vel.x = hvel.x
 	vel.z = hvel.z
-	#vel = move_and_slide(vel, Vector3(0,1,0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
-	#testing realistic kinematic and rigid body interaction
-	vel = move_and_slide(vel, Vector3(0,1,0),0.05, 4, deg2rad(MAX_SLOPE_ANGLE), false)
+	
+	
+	vel = move_and_slide(vel, Vector3(0,1,0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+	
+	#testing realistic kinematic and rigid body interaction for heavy unmovable objects
+	#Still has issues moving round objects
+	#vel = move_and_slide(vel, Vector3(0,1,0),0.05, 4, deg2rad(MAX_SLOPE_ANGLE), false)
+	# after calling move_and_slide()
+#	for index in get_slide_count():
+#		var collision = get_slide_collision(index)
+#		if collision.collider.is_in_group("bodies"):
+#			#collision.collider.apply_central_impulse(-collision.normal * push)
+#			vel = move_and_slide(vel / (collision.collider.weight), Vector3(0,1,0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+		
 
 	
 
@@ -231,3 +243,5 @@ func _on_Area_body_exited(body):
 func _on_damage_area_body_entered(body):
 	if body is RigidBody and body.damage != null and body.thrown == true:
 		pass
+	
+
