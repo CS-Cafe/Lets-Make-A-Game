@@ -5,7 +5,7 @@
 [sub_resource type="CapsuleShape" id=1]
 
 [sub_resource type="CapsuleShape" id=2]
-radius = 1.35
+radius = 1.05
 
 [sub_resource type="BoxShape" id=3]
 extents = Vector3( 1, 0.317707, 1 )
@@ -14,6 +14,13 @@ extents = Vector3( 1, 0.317707, 1 )
 
 [node name="fps_player" type="KinematicBody"]
 script = ExtResource( 1 )
+
+[node name="marker" type="CSGPolygon" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.79816, 0 )
+polygon = PoolVector2Array( 0.5, 0.5, 0, 0, 0, 1 )
+mode = 1
+spin_degrees = 360.0
+spin_sides = 8
 
 [node name="collision_body" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
