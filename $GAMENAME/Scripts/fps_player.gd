@@ -1,9 +1,9 @@
-##TO DO LIST
-#Adjust Flashlight Size/Intensity
-
-
-
 extends KinematicBody
+
+#To Do List
+#->Flashlight Mechanics
+#->Adding in Damage and Demo Networking
+#->Code Refactoring
 
 #Basic Movement
 const ACCEL = 4.5
@@ -12,7 +12,6 @@ const MAX_SLOPE_ANGLE = 40
 const MAX_SPEED = 15
 var vel = Vector3()
 var dir = Vector3()
-
 
 #Jump Movement
 const JUMP_SPEED = 9
@@ -32,12 +31,9 @@ export var x_range = 70
 
 #Grabbing RigidBodys
 var grabbed_object = null
-#const OBJECT_THROW_FORCE = 120
-#const OBJECT_GRAB_DISTANCE = 7
-#const OBJECT_GRAB_RAY_DISTANCE = 10
-export var OBJECT_THROW_FORCE = 120
-export var OBJECT_GRAB_DISTANCE = 7
-export var OBJECT_GRAB_RAY_DISTANCE = 10
+export var OBJECT_THROW_FORCE = 120 #change to const upon balancing
+export var OBJECT_GRAB_DISTANCE = 7 #change to const upon balancing
+export var OBJECT_GRAB_RAY_DISTANCE = 10 #change to const upon balancing
 var object_detection
 var object_detection_collision
 
@@ -84,7 +80,6 @@ func _input(event):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		rotation_helper.rotate_x(deg2rad(event.relative.y*MOUSE_SENSITIVITY * -1)) #chagne to 1 for inverted mouse up/dwn
 		self.rotate_y(deg2rad(event.relative.x*MOUSE_SENSITIVITY * -1)) #change to 1 for inverted mouse left/right
-		
 		var camera_rot = rotation_helper.rotation_degrees
 		camera_rot.x = clamp(camera_rot.x, -x_range, x_range)
 		rotation_helper.rotation_degrees = camera_rot
@@ -93,6 +88,7 @@ func process_inputs(delta):
 		#Check if Jumping
 		if is_on_floor(): #keeps motion while in jump
 			dir = Vector3() 
+
 		#Camera Transform
 		var cam_xform = camera.get_global_transform()
 		
@@ -118,8 +114,7 @@ func process_inputs(delta):
 		if is_on_floor():
 			if Input.is_action_just_pressed("movement_jump"):
 				vel.y = JUMP_SPEED
-			
-			
+		
 		#Cursor Freeing
 		if Input.is_action_just_pressed("ui_cancel"):
 			if Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
@@ -160,7 +155,6 @@ func process_inputs(delta):
 						grabbed_object.scale = grabbed_object.scale * 0.5
 						grabbed_object.set_visible(false)
 						#Setup logic for holding object in hand here
-						
 			else:
 				grabbed_object.mode = RigidBody.MODE_RIGID
 				grabbed_object.apply_impulse(Vector3(0,0,0), -camera.global_transform.basis.z.normalized()*OBJECT_THROW_FORCE)
@@ -177,19 +171,16 @@ func process_inputs(delta):
 
 func process_movement(delta):
 	dir.y = 0
-	dir = dir.normalized()
-	
+	dir = dir.normalized()	
 	vel.y += delta * gravity
 	var hvel = vel
 	hvel.y = 0
-	
 	var target = dir
 	#target *= MAX_SPEED
 	if is_sprinting:
 		target *= MAX_SPRINT_SPEED
 	else:
 		target *= MAX_SPEED
-	
 	var accel
 	if dir.dot(hvel) > 0:
 		if is_sprinting:
@@ -198,26 +189,10 @@ func process_movement(delta):
 			accel = ACCEL
 	else:
 		accel = DEACCEL
-		
 	hvel = hvel.linear_interpolate(target, accel * delta)
 	vel.x = hvel.x
 	vel.z = hvel.z
-	
-	
 	vel = move_and_slide(vel, Vector3(0,1,0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
-	
-	#testing realistic kinematic and rigid body interaction for heavy unmovable objects
-	#Still has issues moving round objects
-	#vel = move_and_slide(vel, Vector3(0,1,0),0.05, 4, deg2rad(MAX_SLOPE_ANGLE), false)
-	# after calling move_and_slide()
-#	for index in get_slide_count():
-#		var collision = get_slide_collision(index)
-#		if collision.collider.is_in_group("bodies"):
-#			#collision.collider.apply_central_impulse(-collision.normal * push)
-#			vel = move_and_slide(vel / (collision.collider.weight), Vector3(0,1,0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
-		
-
-	
 
 #Considering Highlighting Objects or Highlighting/Changing HUD Reticle
 func _on_Area_body_entered(body):
@@ -239,9 +214,11 @@ func _on_Area_body_exited(body):
 	pass
 	pass # Replace with function body.
 
-
 func _on_damage_area_body_entered(body):
 	if body is RigidBody and body.damage != null and body.thrown == true:
 		pass
+		reticle.color = Color(1,0,0,1)
+		#implement damage here
+		
 	
 
