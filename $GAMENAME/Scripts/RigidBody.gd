@@ -1,5 +1,6 @@
 extends RigidBody
 
+export var weightOfObject = 1.0
 
 var thrown = false
 export var damage = 0

@@ -62,28 +62,42 @@ func _ready():
 	
 	#Grabbing Objects
 	object_detection = $rotation_helper/gun_fire_points
-	object_detection_collision = $rotation_helper/gun_fire_points/grab_objects/Area/CollisionShape
+	object_detection_collision = \
+			$rotation_helper/gun_fire_points/grab_objects/Area/CollisionShape
+	
 	if true:
 		#Set Area to Grab Distance
-		object_detection.translation = Vector3(0,0,OBJECT_GRAB_RAY_DISTANCE / 2 * -1)
-		object_detection_collision.get_shape().set_extents(Vector3(.05,.05,OBJECT_GRAB_RAY_DISTANCE / 2))
-		
-	
+		object_detection.translation = \
+				Vector3(0,0,OBJECT_GRAB_RAY_DISTANCE / 2 * -1)
+		object_detection_collision.get_shape().set_extents(
+				Vector3(.05,.05,OBJECT_GRAB_RAY_DISTANCE / 2)
+				)
+				
 	#Initial Mouse Mode
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	
+
+
 func _physics_process(delta):
 	process_inputs(delta)
 	process_movement(delta)
-	
+
+
 func _input(event):
-	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		rotation_helper.rotate_x(deg2rad(event.relative.y*MOUSE_SENSITIVITY * -1)) #chagne to 1 for inverted mouse up/dwn
-		self.rotate_y(deg2rad(event.relative.x*MOUSE_SENSITIVITY * -1)) #change to 1 for inverted mouse left/right
+	if event is InputEventMouseMotion and \
+	Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		rotation_helper.rotate_x(
+				deg2rad(event.relative.y*MOUSE_SENSITIVITY * -1))
+				#change to 1 for inverted mouse up/dwn
+		self.rotate_y(
+				deg2rad(event.relative.x*MOUSE_SENSITIVITY * -1)) 
+				#change to 1 for inverted mouse left/right
+		
 		var camera_rot = rotation_helper.rotation_degrees
 		camera_rot.x = clamp(camera_rot.x, -x_range, x_range)
-		rotation_helper.rotation_degrees = camera_rot
 		
+		rotation_helper.rotation_degrees = camera_rot
+
+
 func process_inputs(delta):
 		#Check if Jumping
 		if is_on_floor(): #keeps motion while in jump
@@ -104,7 +118,6 @@ func process_inputs(delta):
 			input_movement_vector.x -= 1
 		if Input.is_action_pressed("movement_right") and is_on_floor():
 			input_movement_vector.x += 1
-		
 		input_movement_vector = input_movement_vector.normalized()
 		
 		dir += -cam_xform.basis.z * input_movement_vector.y
@@ -137,14 +150,26 @@ func process_inputs(delta):
 			is_sprinting = false
 			
 		#Grabbing RigidBody's
-		if Input.is_action_just_pressed("fire_grenade"): # and current_weapon == "UNARMED": #For Use in True FPS
+		if Input.is_action_just_pressed("fire_grenade"): 
+			# and current_weapon == "UNARMED": #For Use in True FPS
 			if grabbed_object == null:
 				var state = get_world().direct_space_state
 				var center_position = get_viewport().size / 2
 				var ray_from = camera.project_ray_origin(center_position)
-				var ray_to = ray_from + camera.project_ray_normal(center_position) * OBJECT_GRAB_RAY_DISTANCE
+				var ray_to = ray_from \
+				+ camera.project_ray_normal(center_position) \
+				* OBJECT_GRAB_RAY_DISTANCE
 				
-				var ray_result = state.intersect_ray(ray_from, ray_to, [self, $rotation_helper/gun_fire_points/grab_objects/Area])
+				var ray_result = \
+						state.intersect_ray(
+							ray_from, 
+							ray_to, 
+							[
+								self,
+								$rotation_helper/gun_fire_points/grab_objects/Area
+							]
+						)
+						
 				if !ray_result.empty():
 					if ray_result["collider"] is RigidBody:
 						grabbed_object = ray_result["collider"]
@@ -157,7 +182,9 @@ func process_inputs(delta):
 						#Setup logic for holding object in hand here
 			else:
 				grabbed_object.mode = RigidBody.MODE_RIGID
-				grabbed_object.apply_impulse(Vector3(0,0,0), -camera.global_transform.basis.z.normalized()*OBJECT_THROW_FORCE)
+				grabbed_object.apply_impulse(Vector3(0,0,0), 
+						-camera.global_transform.basis.z.normalized()
+						*OBJECT_THROW_FORCE/grabbed_object.weightOfObject)
 				grabbed_object.collision_layer = 1
 				grabbed_object.collision_mask = 1
 				grabbed_object.thrown = true #Object has been thrown
@@ -167,7 +194,11 @@ func process_inputs(delta):
 				grabbed_object = null
 				#Setup logic for removing object in hand here
 		if grabbed_object != null:
-			grabbed_object.global_transform.origin = camera.global_transform.origin + (-camera.global_transform.basis.z.normalized() * OBJECT_GRAB_DISTANCE)
+			grabbed_object.global_transform.origin = \
+					camera.global_transform.origin \
+					+ (-camera.global_transform.basis.z.normalized() \
+					* OBJECT_GRAB_DISTANCE)
+
 
 func process_movement(delta):
 	dir.y = 0
@@ -192,27 +223,40 @@ func process_movement(delta):
 	hvel = hvel.linear_interpolate(target, accel * delta)
 	vel.x = hvel.x
 	vel.z = hvel.z
-	vel = move_and_slide(vel, Vector3(0,1,0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+	vel = move_and_slide(
+			vel, 
+			Vector3(0,1,0), 
+			0.05, 
+			4, 
+			deg2rad(MAX_SLOPE_ANGLE)
+		)
+
 
 #Considering Highlighting Objects or Highlighting/Changing HUD Reticle
 func _on_Area_body_entered(body):
 	#Highlight RigidBody
 	if body is RigidBody:
-	#	var CSGSPHERE : Node = body.get_node("CSGSphere")
-	#	CSGSPHERE.material_override = load("res://Shaders_and_Materials/plain_white_material_outline.tres")
-	#	#print(CSGSPHERE)
+		var CSGSPHERE : Node = body.get_node("CSGSphere")
+		CSGSPHERE.material_override = \
+		load("res://Shaders_and_Materials/plain_white_material_outline.tres")
+		
+		print(CSGSPHERE)
 		reticle.color = Color(0,1,0,1)
 	pass
+
 
 func _on_Area_body_exited(body):
 	#Remove Highlight on RigidBody
 	if body is RigidBody:
-	#	var CSGSPHERE : Node = body.get_node("CSGSphere")
-	#	CSGSPHERE.material_override = load("res://Shaders_and_Materials/plain_white_material.tres")
-	#	#print(CSGSPHERE)
+		var CSGSPHERE : Node = body.get_node("CSGSphere")
+		CSGSPHERE.material_override = \
+		load("res://Shaders_and_Materials/plain_white_material.tres")
+		
+		print(CSGSPHERE)
 		reticle.color = Color(1,1,1,1)
 	pass
 	pass # Replace with function body.
+
 
 func _on_damage_area_body_entered(body):
 	if body is RigidBody and body.damage != null and body.thrown == true:

@@ -72,7 +72,10 @@ margin_left = 27.0
 margin_top = 28.0
 margin_right = 616.0
 margin_bottom = 86.0
-text = "Right Click to Pick up Spheres, Right Click again to Throw them at Pressure Plates"
+text = "WASD to Move
+SPACE to Jump
+R_MOUSE to Pick Up/Throw Highlighted Objects
+ESC to Free Cursor/Lock Cursor"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -93,3 +96,4 @@ mass = 2.0
 [node name="RigidBody3" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16.2704, 13.3313, -7.13952 )
 mass = 1.5
+weightOfObject = 0.25
