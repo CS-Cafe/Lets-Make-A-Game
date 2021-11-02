@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/RigidBody.gd" type="Script" id=1]
+[ext_resource path="res://Assets/knife-col.dae" type="PackedScene" id=2]
+
+[sub_resource type="PhysicsMaterial" id=1]
+rough = true
+bounce = 0.1
+
+[node name="RigidBody" type="RigidBody"]
+mass = 600.0
+physics_material_override = SubResource( 1 )
+script = ExtResource( 1 )
+
+[node name="OmniLight" type="OmniLight" parent="."]
+
+[node name="knife-col" parent="." instance=ExtResource( 2 )]

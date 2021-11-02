@@ -171,6 +171,7 @@ func process_inputs(delta):
 						)
 						
 				if !ray_result.empty():
+					_on_Area_body_entered(ray_result["collider"]) #trying something funky
 					if ray_result["collider"] is RigidBody:
 						grabbed_object = ray_result["collider"]
 						grabbed_object.mode = RigidBody.MODE_STATIC
@@ -182,7 +183,7 @@ func process_inputs(delta):
 						#Setup logic for holding object in hand here
 			else:
 				grabbed_object.mode = RigidBody.MODE_RIGID
-				grabbed_object.apply_impulse(Vector3(0,0,0), 
+				grabbed_object.apply_impulse(Vector3(0,0,0), #make these slightly random for interesting play
 						-camera.global_transform.basis.z.normalized()
 						*OBJECT_THROW_FORCE/grabbed_object.weightOfObject)
 				grabbed_object.collision_layer = 1
