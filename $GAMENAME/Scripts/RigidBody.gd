@@ -6,7 +6,8 @@ var thrown = false
 export var damage = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	$CSGSphere.material_override = \
+		load("res://Shaders_and_Materials/plain_white_material_outline.tres")
 	
 func _physics_process(delta):
 	if true :

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scenes/fps_player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/object_floating_lightcube.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Scenes/RigidBodyCube.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/RigidBodyTriangle.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/knife-col.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/tableTest.tscn" type="PackedScene" id=8]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 5, 1, 5 )
@@ -17,12 +18,12 @@ sky_horizon_color = Color( 0.247059, 0.619608, 0.211765, 1 )
 sky_curve = 0.302722
 ground_bottom_color = Color( 0, 0, 0, 1 )
 ground_horizon_color = Color( 0.12549, 1, 0, 1 )
-sun_energy = 2.0
 
 [sub_resource type="Environment" id=3]
 background_mode = 2
 background_sky = SubResource( 2 )
 ambient_light_energy = 0.0
+ambient_light_sky_contribution = 0.0
 fog_color = Color( 0, 0, 0, 1 )
 fog_sun_color = Color( 0, 0, 0, 1 )
 fog_depth_enabled = false
@@ -41,9 +42,12 @@ shape = SubResource( 1 )
 width = 10.0
 depth = 10.0
 
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.80902, 3.49662, 10.8848 )
+
 [node name="fps_player" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.80902, 9.72751, 1.60423 )
-OBJECT_THROW_FORCE = 10
+OBJECT_THROW_FORCE = 20
 OBJECT_GRAB_DISTANCE = 2
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -101,3 +105,6 @@ weightOfObject = 0.25
 
 [node name="knife-col" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0965, 10.4744, -3.20949 )
+
+[node name="tableTest" parent="." instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 1.16526, 14.9594 )

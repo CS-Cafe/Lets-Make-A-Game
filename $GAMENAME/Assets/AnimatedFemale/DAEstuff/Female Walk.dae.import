@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/knifeModelNoRotate.dae-7a227377800870f640dd79e3dba4e7ca.scn"
+path="res://.import/Female Walk.dae-b2075f9a488b2cd624915989467a25dc.scn"
 
 [deps]
 
-source_file="res://Assets/knifeModelNoRotate.dae"
-dest_files=[ "res://.import/knifeModelNoRotate.dae-7a227377800870f640dd79e3dba4e7ca.scn" ]
+source_file="res://Assets/AnimatedFemale/DAEstuff/Female Walk.dae"
+dest_files=[ "res://.import/Female Walk.dae-b2075f9a488b2cd624915989467a25dc.scn" ]
 
 [params]
 

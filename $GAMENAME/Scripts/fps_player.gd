@@ -5,11 +5,15 @@ extends KinematicBody
 #->Adding in Damage and Demo Networking
 #->Code Refactoring
 
+#Animation
+onready var animPlayer = get_node("femaleModel/AnimationPlayer")
+
+
 #Basic Movement
 const ACCEL = 4.5
 const DEACCEL = 16
 const MAX_SLOPE_ANGLE = 40
-const MAX_SPEED = 15
+const MAX_SPEED = 8#15
 var vel = Vector3()
 var dir = Vector3()
 
@@ -64,6 +68,9 @@ func _ready():
 	object_detection = $rotation_helper/gun_fire_points
 	object_detection_collision = \
 			$rotation_helper/gun_fire_points/grab_objects/Area/CollisionShape
+			
+	#Set initial Animation
+	animPlayer.play("default")
 	
 	if true:
 		#Set Area to Grab Distance
@@ -99,6 +106,12 @@ func _input(event):
 
 
 func process_inputs(delta):
+	
+		print(vel)
+		if abs(vel.x) < 1 and abs(vel.y) < 1 and abs(vel.z) < 1 and is_on_floor():
+			animPlayer.play("default")
+		
+		
 		#Check if Jumping
 		if is_on_floor(): #keeps motion while in jump
 			dir = Vector3() 
@@ -109,15 +122,19 @@ func process_inputs(delta):
 		#Set Input Movement
 		var input_movement_vector = Vector2()
 		
-		#Basic Movement
+		#Basic Movement - only way to avoid animation glitch is elif statements instead of all ifs
 		if Input.is_action_pressed("movement_forward") and is_on_floor():
 			input_movement_vector.y += 1
-		if Input.is_action_pressed("movement_backward") and is_on_floor():
+			animPlayer.play("walk")
+		elif Input.is_action_pressed("movement_backward") and is_on_floor():
 			input_movement_vector.y -= 1
-		if Input.is_action_pressed("movement_left") and is_on_floor():
+			animPlayer.play_backwards("walk")
+		elif Input.is_action_pressed("movement_left") and is_on_floor():
 			input_movement_vector.x -= 1
-		if Input.is_action_pressed("movement_right") and is_on_floor():
+			animPlayer.play("leftstrafe")
+		elif Input.is_action_pressed("movement_right") and is_on_floor():
 			input_movement_vector.x += 1
+			animPlayer.play("rightstrafe")
 		input_movement_vector = input_movement_vector.normalized()
 		
 		dir += -cam_xform.basis.z * input_movement_vector.y
@@ -127,6 +144,7 @@ func process_inputs(delta):
 		if is_on_floor():
 			if Input.is_action_just_pressed("movement_jump"):
 				vel.y = JUMP_SPEED
+				animPlayer.play("jump")
 		
 		#Cursor Freeing
 		if Input.is_action_just_pressed("ui_cancel"):
@@ -171,19 +189,29 @@ func process_inputs(delta):
 						)
 						
 				if !ray_result.empty():
-					_on_Area_body_entered(ray_result["collider"]) #trying something funky
+					
 					if ray_result["collider"] is RigidBody:
 						grabbed_object = ray_result["collider"]
 						grabbed_object.mode = RigidBody.MODE_STATIC
-						grabbed_object.collision_layer = 1 #original is 0
-						grabbed_object.collision_mask = 1 #original is 0
+						grabbed_object.collision_layer = 0 #original is 0
+						grabbed_object.collision_mask = 0 #original is 0
 						#Just for Size Purposes with test object
 						grabbed_object.scale = grabbed_object.scale * 0.5
+						#front facing in blender is also how the object is 
+						#oriented at 0,0,0 rotation
+						grabbed_object.rotation = Vector3(0,-90,0)
 						grabbed_object.set_visible(false)
 						#Setup logic for holding object in hand here
+						
 			else:
 				grabbed_object.mode = RigidBody.MODE_RIGID
-				grabbed_object.apply_impulse(Vector3(0,0,0), #make these slightly random for interesting play
+				var rng = RandomNumberGenerator.new()
+				rng.randomize()
+				var x = 0#rng.randf_range(-.5, .5)
+				var y = .5#rng.randf_range(0, .5)
+				var z = 0#rng.randf_range(0, 1)
+				grabbed_object.apply_impulse(Vector3(x,y,z), 
+				#make these slightly random for interesting play
 						-camera.global_transform.basis.z.normalized()
 						*OBJECT_THROW_FORCE/grabbed_object.weightOfObject)
 				grabbed_object.collision_layer = 1
@@ -238,11 +266,11 @@ func _on_Area_body_entered(body):
 	#Highlight RigidBody
 	if body is RigidBody:
 		var CSGSPHERE : Node = body.get_node("CSGSphere")
-		CSGSPHERE.material_override = \
-		load("res://Shaders_and_Materials/plain_white_material_outline.tres")
+		#CSGSPHERE.material_override = \
+		#load("res://Shaders_and_Materials/plain_white_material_outline.tres")
 		
 		print(CSGSPHERE)
-		reticle.color = Color(0,1,0,1)
+		#reticle.color = Color(0,1,0,1)
 	pass
 
 
@@ -250,11 +278,11 @@ func _on_Area_body_exited(body):
 	#Remove Highlight on RigidBody
 	if body is RigidBody:
 		var CSGSPHERE : Node = body.get_node("CSGSphere")
-		CSGSPHERE.material_override = \
-		load("res://Shaders_and_Materials/plain_white_material.tres")
+		#CSGSPHERE.material_override = \
+		#load("res://Shaders_and_Materials/plain_white_material.tres")
 		
 		print(CSGSPHERE)
-		reticle.color = Color(1,1,1,1)
+		#reticle.color = Color(1,1,1,1)
 	pass
 	pass # Replace with function body.
 
