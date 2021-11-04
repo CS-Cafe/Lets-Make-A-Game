@@ -110,7 +110,8 @@ func process_inputs(delta):
 		print(vel)
 		if abs(vel.x) < 1 and abs(vel.y) < 1 and abs(vel.z) < 1 and is_on_floor():
 			animPlayer.play("default")
-		
+		if not is_on_floor():
+			animPlayer.play("jump")
 		
 		#Check if Jumping
 		if is_on_floor(): #keeps motion while in jump
@@ -122,19 +123,67 @@ func process_inputs(delta):
 		#Set Input Movement
 		var input_movement_vector = Vector2()
 		
+		#Booleans for Movement
+		var forward = false
+		var backward = false
+		var left = false
+		var right = false
+		
 		#Basic Movement - only way to avoid animation glitch is elif statements instead of all ifs
-		if Input.is_action_pressed("movement_forward") and is_on_floor():
+		if Input.is_action_pressed("movement_forward"):
+			forward = true
+			
+		if Input.is_action_pressed("movement_backward"):
 			input_movement_vector.y += 1
-			animPlayer.play("walk")
-		elif Input.is_action_pressed("movement_backward") and is_on_floor():
-			input_movement_vector.y -= 1
-			animPlayer.play_backwards("walk")
-		elif Input.is_action_pressed("movement_left") and is_on_floor():
-			input_movement_vector.x -= 1
-			animPlayer.play("leftstrafe")
-		elif Input.is_action_pressed("movement_right") and is_on_floor():
-			input_movement_vector.x += 1
-			animPlayer.play("rightstrafe")
+			backward = true
+		if Input.is_action_pressed("movement_left"):
+			left = true
+		if Input.is_action_pressed("movement_right"):
+			right = true
+		
+		#handlingAnimations
+		
+		
+#		if Input.is_action_pressed("movement_forward") and is_on_floor():
+#			input_movement_vector.y += 1
+#			if Input.is_action_pressed("movement_left"):
+#				input_movement_vector.x -= 1
+#				animPlayer.play("leftstrafe")
+#			elif Input.is_action_pressed("movement_right"):
+#				input_movement_vector.x += 1
+#				animPlayer.play("rightstrafe")
+#			else:
+#				animPlayer.play("walk")
+#		if Input.is_action_pressed("movement_backward") and is_on_floor():
+#			input_movement_vector.y -= 1
+#			if Input.is_action_pressed("movement_left"):
+#				input_movement_vector.x -= 1
+#				animPlayer.play_backwards("rightstrafe")
+#			elif Input.is_action_pressed("movement_right"):
+#				input_movement_vector.x += 1
+#				animPlayer.play_backwards("leftstrafe")
+#			else:
+#				animPlayer.play_backwards("walk")
+#		if Input.is_action_pressed("movement_left") and is_on_floor():
+#			input_movement_vector.x -= 1
+#			if Input.is_action_pressed("movement_forward"):
+#				input_movement_vector.y += 1
+#				animPlayer.play("leftstrafe")
+#			elif Input.is_action_pressed("movement_backwards"):
+#				input_movement_vector.y -= 1
+#				animPlayer.play_backwards("rightstrafe")
+#			else:
+#				animPlayer.play("leftstrafe")
+#		if Input.is_action_pressed("movement_right") and is_on_floor():
+#			input_movement_vector.x += 1
+#			if Input.is_action_pressed("movement_forward"):
+#				input_movement_vector.y += 1
+#				animPlayer.play("righttstrafe")
+#			elif Input.is_action_pressed("movement_backwards"):
+#				input_movement_vector.y -= 1
+#				animPlayer.play_backwards("leftstrafe")
+#			else:
+#				animPlayer.play("rightstrafe")
 		input_movement_vector = input_movement_vector.normalized()
 		
 		dir += -cam_xform.basis.z * input_movement_vector.y
