@@ -6,7 +6,7 @@ extends KinematicBody
 #->Code Refactoring
 
 #Animation
-onready var animPlayer = get_node("femaleModel/AnimationPlayer")
+onready var animPlayer = get_node("player_model/femaleModel/AnimationPlayer")
 
 
 #Basic Movement
@@ -108,10 +108,7 @@ func _input(event):
 func process_inputs(delta):
 	
 		print(vel)
-		if abs(vel.x) < 1 and abs(vel.y) < 1 and abs(vel.z) < 1 and is_on_floor():
-			animPlayer.play("default")
-		if not is_on_floor():
-			animPlayer.play("jump")
+		
 		
 		#Check if Jumping
 		if is_on_floor(): #keeps motion while in jump
@@ -131,19 +128,44 @@ func process_inputs(delta):
 		
 		#Basic Movement - only way to avoid animation glitch is elif statements instead of all ifs
 		if Input.is_action_pressed("movement_forward"):
-			forward = true
-			
-		if Input.is_action_pressed("movement_backward"):
 			input_movement_vector.y += 1
+			forward = true
+		if Input.is_action_pressed("movement_backward"):
+			input_movement_vector.y -= 1
 			backward = true
 		if Input.is_action_pressed("movement_left"):
+			input_movement_vector.x -= 1
 			left = true
 		if Input.is_action_pressed("movement_right"):
+			input_movement_vector.x += 1
 			right = true
 		
-		#handlingAnimations
+		#handlingAnimations - walk has been exchanged with slow run
+		if forward and is_on_floor():
+			if left:
+				animPlayer.play("leftstrafe")
+			elif right:
+				animPlayer.play("rightstrafe")
+			else:	
+				animPlayer.play("walk")
+		elif backward and is_on_floor():
+			if left:
+				animPlayer.play_backwards("rightstrafe")
+			elif right:
+				animPlayer.play_backwards("leftstrafe")
+			else:	
+				animPlayer.play_backwards("walk")
+		elif left and is_on_floor():
+			animPlayer.play("leftstrafe")
+		elif right and is_on_floor():
+			animPlayer.play("rightstrafe")
 		
 		
+		
+		if abs(vel.x) < 1 and abs(vel.y) < 1 and abs(vel.z) < 1 and is_on_floor():
+			animPlayer.play("default")
+		if not is_on_floor():
+			animPlayer.play("jump")
 #		if Input.is_action_pressed("movement_forward") and is_on_floor():
 #			input_movement_vector.y += 1
 #			if Input.is_action_pressed("movement_left"):
@@ -212,7 +234,9 @@ func process_inputs(delta):
 		
 		#Sprinting Movement
 		if Input.is_action_pressed("movement_sprint"):
-			is_sprinting = true
+			#is_sprinting = true
+			pass
+			#sprinting removed for the moment
 		else:
 			is_sprinting = false
 			
