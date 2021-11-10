@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/fps_player.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/femaleModel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/maleModel.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.5
@@ -45,8 +46,14 @@ shape = SubResource( 3 )
 transform = Transform( -1.65, 0, 1.44248e-07, 0, 1.65, 0, -1.44248e-07, 0, -1.65, 0, -1.395, 0 )
 
 [node name="femaleModel" parent="player_model" instance=ExtResource( 2 )]
+visible = false
+
+[node name="maleModel" parent="player_model" instance=ExtResource( 3 )]
 
 [node name="rotation_helper" type="Spatial" parent="."]
+
+[node name="head" type="Camera" parent="rotation_helper"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.39, 0.00883722 )
 
 [node name="player_camera" type="Camera" parent="rotation_helper"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.39, 2.5 )

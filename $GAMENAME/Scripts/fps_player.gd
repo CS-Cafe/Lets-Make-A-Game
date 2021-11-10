@@ -8,7 +8,9 @@ extends KinematicBody
 export var is_active = true
 
 #Animation
-onready var animPlayer = get_node("player_model/femaleModel/AnimationPlayer")
+#set up some sort of switch for this
+#onready var animPlayer = get_node("player_model/femaleModel/AnimationPlayer")
+onready var animPlayer = get_node("player_model/maleModel/AnimationPlayer")
 
 
 #Basic Movement
@@ -42,6 +44,7 @@ export var OBJECT_GRAB_DISTANCE = 7 #change to const upon balancing
 export var OBJECT_GRAB_RAY_DISTANCE = 10 #change to const upon balancing
 var object_detection
 var object_detection_collision
+var objectToThrowVar
 
 #Rotation Helper
 var rotation_helper
@@ -52,7 +55,9 @@ var reticle
 
 func _ready():
 	#Camera
-	camera = $rotation_helper/player_camera
+	#camera = $rotation_helper/player_camera
+	camera = $rotation_helper/head
+	camera.current = false
 	
 	#Rotation Helper
 	rotation_helper = $rotation_helper
@@ -255,10 +260,15 @@ func process_inputs(delta):
 			if grabbed_object == null:
 				var state = get_world().direct_space_state
 				var center_position = get_viewport().size / 2
-				var ray_from = camera.project_ray_origin(center_position)
+				var ray_from = camera.project_ray_origin(center_position) #camera is behind head now, causing collision issues
+				#var ray_from = objectToThrowVar.project_ray_origin(center_position)
+				#same as above, camera is behind head
 				var ray_to = ray_from \
 				+ camera.project_ray_normal(center_position) \
 				* OBJECT_GRAB_RAY_DISTANCE
+#				var ray_to = ray_from \
+#				+ objectToThrowVar.project_ray_normal(center_position) \
+#				* OBJECT_GRAB_RAY_DISTANCE
 				
 				var ray_result = \
 						state.intersect_ray(
@@ -278,31 +288,31 @@ func process_inputs(delta):
 						grabbed_object.collision_layer = 0 #original is 0
 						grabbed_object.collision_mask = 0 #original is 0
 						#Just for Size Purposes with test object
-						grabbed_object.scale = grabbed_object.scale * .5
+						#grabbed_object.scale = grabbed_object.scale * .5
 						#front facing in blender is also how the object is 
 						#oriented at 0,0,0 rotation
 						grabbed_object.rotation = Vector3(0,-90,0)
-						grabbed_object.set_visible(false)
+						#grabbed_object.set_visible(false)
 						#Setup logic for holding object in hand here
 						
 			else:
 				grabbed_object.mode = RigidBody.MODE_RIGID
 				var rng = RandomNumberGenerator.new()
-				rng.randomize()
+				#rng.randomize()
 				var x = 0#rng.randf_range(-.5, .5)
-				var y = .5#rng.randf_range(0, .5)
+				var y = 0#rng.randf_range(0, .5)
 				var z = 0#rng.randf_range(0, 1)
 				grabbed_object.apply_impulse(Vector3(x,y,z), 
 				#make these slightly random for interesting play
 						-camera.global_transform.basis.z.normalized()
-						*OBJECT_THROW_FORCE/grabbed_object.weightOfObject)
+						*OBJECT_THROW_FORCE)#/grabbed_object.weightOfObject)
 				grabbed_object.collision_layer = 1
 				grabbed_object.collision_mask = 1
 				#grabbed_object.thrown = true #Object has been thrown
 				grabbed_object.damage = 5
 				grabbed_object.thrower = self
 				#Just for Size Purposes with test object
-				grabbed_object.scale = grabbed_object.scale * 2
+				#grabbed_object.scale = grabbed_object.scale * 2
 				grabbed_object.set_visible(true)
 				#print(grabbed_object.thrown)
 				grabbed_object = null
