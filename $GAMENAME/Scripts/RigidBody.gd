@@ -2,10 +2,12 @@ extends RigidBody
 
 export var weightOfObject = 1.0
 
-var thrown = false
+var thrown = true
+var thrower = null
 export var damage = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	thrown = true
 	$CSGSphere.material_override = \
 		load("res://Shaders_and_Materials/plain_white_material_outline.tres")
 	

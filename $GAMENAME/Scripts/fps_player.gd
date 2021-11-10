@@ -5,6 +5,8 @@ extends KinematicBody
 #->Adding in Damage and Demo Networking
 #->Code Refactoring
 
+export var is_active = true
+
 #Animation
 onready var animPlayer = get_node("player_model/femaleModel/AnimationPlayer")
 
@@ -90,6 +92,10 @@ func _physics_process(delta):
 
 
 func _input(event):
+	#Purely for demo instancing of player
+	#print(vel)
+	if not is_active:
+		return
 	if event is InputEventMouseMotion and \
 	Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		rotation_helper.rotate_x(
@@ -106,10 +112,13 @@ func _input(event):
 
 
 func process_inputs(delta):
-	
-		print(vel)
-		
-		
+		#Purely for demo instancing of player
+		#print(vel)
+		if not is_active:
+			$rotation_helper/player_camera.current = false
+			return
+		else:
+			$rotation_helper/player_camera.current = true
 		#Check if Jumping
 		if is_on_floor(): #keeps motion while in jump
 			dir = Vector3() 
@@ -269,7 +278,7 @@ func process_inputs(delta):
 						grabbed_object.collision_layer = 0 #original is 0
 						grabbed_object.collision_mask = 0 #original is 0
 						#Just for Size Purposes with test object
-						grabbed_object.scale = grabbed_object.scale * 0.5
+						grabbed_object.scale = grabbed_object.scale * .5
 						#front facing in blender is also how the object is 
 						#oriented at 0,0,0 rotation
 						grabbed_object.rotation = Vector3(0,-90,0)
@@ -289,10 +298,13 @@ func process_inputs(delta):
 						*OBJECT_THROW_FORCE/grabbed_object.weightOfObject)
 				grabbed_object.collision_layer = 1
 				grabbed_object.collision_mask = 1
-				grabbed_object.thrown = true #Object has been thrown
+				#grabbed_object.thrown = true #Object has been thrown
+				grabbed_object.damage = 5
+				grabbed_object.thrower = self
 				#Just for Size Purposes with test object
 				grabbed_object.scale = grabbed_object.scale * 2
 				grabbed_object.set_visible(true)
+				#print(grabbed_object.thrown)
 				grabbed_object = null
 				#Setup logic for removing object in hand here
 		if grabbed_object != null:
@@ -342,7 +354,7 @@ func _on_Area_body_entered(body):
 		#CSGSPHERE.material_override = \
 		#load("res://Shaders_and_Materials/plain_white_material_outline.tres")
 		
-		print(CSGSPHERE)
+		#print(CSGSPHERE)
 		#reticle.color = Color(0,1,0,1)
 	pass
 
@@ -354,16 +366,23 @@ func _on_Area_body_exited(body):
 		#CSGSPHERE.material_override = \
 		#load("res://Shaders_and_Materials/plain_white_material.tres")
 		
-		print(CSGSPHERE)
+		#print(CSGSPHERE)
 		#reticle.color = Color(1,1,1,1)
 	pass
 	pass # Replace with function body.
 
 
 func _on_damage_area_body_entered(body):
-	if body is RigidBody and body.damage != null and body.thrown == true:
-		pass
-		reticle.color = Color(1,0,0,1)
+	if body is RigidBody and body.damage != 0 and body.thrower != self:
+		self.reticle.color = Color(1,0,0,1)
+		print("Damaged")
+		animPlayer.play("death")
+		$collision_body.queue_free()
+		#$collision_feet.queue_free()
+		$rotation_helper/player_flashlight.queue_free()
+		#queue_free() or spectator mode
+		#Make Ghost instance
+		body.queue_free()
 		#implement damage here
 		
 	

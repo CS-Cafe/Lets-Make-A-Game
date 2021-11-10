@@ -50,6 +50,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.80902, 9.72751, 1.60423 )
 OBJECT_THROW_FORCE = 20
 OBJECT_GRAB_DISTANCE = 2
 
+[node name="fps_player2" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5316, 9.72751, 1.60423 )
+is_active = false
+OBJECT_THROW_FORCE = 20
+OBJECT_GRAB_DISTANCE = 2
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 3 )
 

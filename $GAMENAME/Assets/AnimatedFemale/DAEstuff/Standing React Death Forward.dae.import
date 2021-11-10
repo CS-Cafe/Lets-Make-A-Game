@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/shae.dae-e9fff97367bba54446afb1a07955b8a5.scn"
+path="res://.import/Standing React Death Forward.dae-2081cd159367a40e3bab0be8b9d31d6e.scn"
 
 [deps]
 
-source_file="res://Assets/AnimatedFemale/shae/shae.dae"
-dest_files=[ "res://.import/shae.dae-e9fff97367bba54446afb1a07955b8a5.scn" ]
+source_file="res://Assets/AnimatedFemale/DAEstuff/Standing React Death Forward.dae"
+dest_files=[ "res://.import/Standing React Death Forward.dae-2081cd159367a40e3bab0be8b9d31d6e.scn" ]
 
 [params]
 
@@ -20,7 +20,8 @@ nodes/use_legacy_names=false
 materials/location=1
 materials/storage=1
 materials/keep_on_reimport=true
-meshes/compress=true
+meshes/octahedral_compression=true
+meshes/compress=4286
 meshes/ensure_tangents=true
 meshes/storage=0
 meshes/light_baking=0
