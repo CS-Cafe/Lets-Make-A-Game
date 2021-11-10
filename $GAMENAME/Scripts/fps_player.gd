@@ -309,7 +309,7 @@ func process_inputs(delta):
 				var rng = RandomNumberGenerator.new()
 				#rng.randomize()
 				var x = 0#rng.randf_range(-.5, .5)
-				var y = 0#rng.randf_range(0, .5)
+				var y = 0.5#rng.randf_range(0, .5)
 				var z = 0#rng.randf_range(0, 1)
 				grabbed_object.apply_impulse(Vector3(x,y,z), 
 				#make these slightly random for interesting play
@@ -398,6 +398,8 @@ func _on_damage_area_body_entered(body):
 		animPlayer.play("death")
 		$collision_body.queue_free()
 		$collision_feet.queue_free()
+		$rotation_helper/gun_fire_points/grab_objects/Area/CollisionShape.queue_free()
+		$damage_area/area_collision_body.queue_free()
 		$damage_area/area_collision_body.queue_free()
 		$rotation_helper/player_flashlight.queue_free()
 		dead = true
