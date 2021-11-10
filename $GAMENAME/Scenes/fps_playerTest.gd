@@ -12,7 +12,6 @@ export var is_active = true
 #onready var animPlayer = get_node("player_model/femaleModel/AnimationPlayer")
 onready var animPlayer = get_node("player_model/maleModel/AnimationPlayer")
 
-var dead = false
 
 #Basic Movement
 const ACCEL = 4.5
@@ -24,7 +23,7 @@ var dir = Vector3()
 
 #Jump Movement
 const JUMP_SPEED = 9
-var gravity = -24.8
+const gravity = -24.8
 
 #Sprint Movement
 var is_sprinting = false
@@ -98,9 +97,6 @@ func _ready():
 
 
 func _physics_process(delta):
-	if dead:
-		gravity = 0
-	
 	process_inputs(delta)
 	process_movement(delta)
 
@@ -301,7 +297,7 @@ func process_inputs(delta):
 						#front facing in blender is also how the object is 
 						#oriented at 0,0,0 rotation
 						grabbed_object.rotation = Vector3(0,-90,0)
-						grabbed_object.set_visible(false)
+						#grabbed_object.set_visible(false)
 						#Setup logic for holding object in hand here
 						
 			else:
@@ -397,10 +393,8 @@ func _on_damage_area_body_entered(body):
 		print("Damaged")
 		animPlayer.play("death")
 		$collision_body.queue_free()
-		$collision_feet.queue_free()
-		$damage_area/area_collision_body.queue_free()
+		#$collision_feet.queue_free()
 		$rotation_helper/player_flashlight.queue_free()
-		dead = true
 		#queue_free() or spectator mode
 		#Make Ghost instance
 		body.queue_free()
