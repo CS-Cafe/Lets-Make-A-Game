@@ -1,7 +1,6 @@
 extends KinematicBody
 
 #To Do List
-#->Flashlight Mechanics
 #->Adding in Damage and Demo Networking
 #->Code Refactoring
 
@@ -57,7 +56,11 @@ var reticle
 func _ready():
 	
 	
-	
+	if not is_active:
+			$rotation_helper/player_camera.current = false
+			return
+	else:
+		$rotation_helper/player_camera.current = true
 	
 	
 	#Camera
@@ -126,13 +129,11 @@ func _input(event):
 
 
 func process_inputs(delta):
+		if not is_active:
+			return
 		#Purely for demo instancing of player
 		#print(vel)
-		if not is_active:
-			$rotation_helper/player_camera.current = false
-			return
-		else:
-			$rotation_helper/player_camera.current = true
+		
 		#Check if Jumping
 		if is_on_floor(): #keeps motion while in jump
 			dir = Vector3() 
@@ -393,15 +394,15 @@ func _on_Area_body_exited(body):
 
 func _on_damage_area_body_entered(body):
 	if body is RigidBody and body.damage != 0 and body.thrower != self:
-		self.reticle.color = Color(1,0,0,1)
+		#self.reticle.color = Color(1,0,0,1)
 		print("Damaged")
 		animPlayer.play("death")
 		$collision_body.queue_free()
 		$collision_feet.queue_free()
-		$rotation_helper/gun_fire_points/grab_objects/Area/CollisionShape.queue_free()
-		$damage_area/area_collision_body.queue_free()
-		$damage_area/area_collision_body.queue_free()
-		$rotation_helper/player_flashlight.queue_free()
+		$rotation_helper.queue_free()
+		$player_hud.queue_free()
+		$damage_area.queue_free()
+		get_tree()
 		dead = true
 		#queue_free() or spectator mode
 		#Make Ghost instance
