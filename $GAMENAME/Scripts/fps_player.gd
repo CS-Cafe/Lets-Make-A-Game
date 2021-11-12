@@ -4,7 +4,7 @@ extends KinematicBody
 #->Adding in Damage and Demo Networking
 #->Code Refactoring
 
-export var is_active = true
+
 
 #Animation
 #set up some sort of switch for this
@@ -56,11 +56,7 @@ var reticle
 func _ready():
 	
 	
-	if not is_active:
-			$rotation_helper/player_camera.current = false
-			return
-	else:
-		$rotation_helper/player_camera.current = true
+	
 	
 	
 	#Camera
@@ -111,8 +107,7 @@ func _physics_process(delta):
 func _input(event):
 	#Purely for demo instancing of player
 	#print(vel)
-	if not is_active:
-		return
+	
 	if event is InputEventMouseMotion and \
 	Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		rotation_helper.rotate_x(
@@ -129,8 +124,7 @@ func _input(event):
 
 
 func process_inputs(delta):
-		if not is_active:
-			return
+		
 		#Purely for demo instancing of player
 		#print(vel)
 		
@@ -357,13 +351,14 @@ func process_movement(delta):
 	hvel = hvel.linear_interpolate(target, accel * delta)
 	vel.x = hvel.x
 	vel.z = hvel.z
-	vel = move_and_slide(
-			vel, 
-			Vector3(0,1,0), 
-			0.05, 
-			4, 
-			deg2rad(MAX_SLOPE_ANGLE)
-		)
+	if is_network_master():
+		vel = move_and_slide(
+				vel, 
+				Vector3(0,1,0), 
+				0.05, 
+				4, 
+				deg2rad(MAX_SLOPE_ANGLE)
+			)
 
 
 #Considering Highlighting Objects or Highlighting/Changing HUD Reticle
