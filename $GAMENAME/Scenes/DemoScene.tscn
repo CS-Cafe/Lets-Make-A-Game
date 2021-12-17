@@ -106,5 +106,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0965, 10.4744, -3.20949 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 1.16526, 14.9594 )
 
 [node name="player1pos" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.7897, 7.45734, 0 )
 
 [node name="player2pos" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27.3738, 8.62254, 0 )

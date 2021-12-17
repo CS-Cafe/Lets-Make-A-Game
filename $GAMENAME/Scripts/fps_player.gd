@@ -237,6 +237,7 @@ func process_inputs(delta):
 		
 		#Cursor Freeing
 		if Input.is_action_just_pressed("ui_cancel"):
+			print("cursor freeing")
 			if Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 			else:
@@ -351,15 +352,19 @@ func process_movement(delta):
 	hvel = hvel.linear_interpolate(target, accel * delta)
 	vel.x = hvel.x
 	vel.z = hvel.z
-	if is_network_master():
-		vel = move_and_slide(
-				vel, 
-				Vector3(0,1,0), 
-				0.05, 
-				4, 
-				deg2rad(MAX_SLOPE_ANGLE)
-			)
+	if dir != Vector3():	
+		if is_network_master():
+			vel = move_and_slide(
+					vel, 
+					Vector3(0,1,0), 
+					0.05, 
+					4, 
+					deg2rad(MAX_SLOPE_ANGLE)
+				)
+		rpc_unreliable("_set_position", global_transform.origin)
 
+remote func _set_position(pos):
+	global_transform.origin = pos
 
 #Considering Highlighting Objects or Highlighting/Changing HUD Reticle
 func _on_Area_body_entered(body):
